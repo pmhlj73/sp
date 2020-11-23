@@ -13,7 +13,10 @@ public class EmpMain {
 		System.out.println("사원의 수 : " + empService.getEmpCount());
 		System.out.println("사원 목록");
 		System.out.println(empService.getEmpList());
-		
+		//System.out.println(empService.getEmpCount());
+		//System.out.println(empService.getEmpCount(30));
+		//System.out.println(empService.getAllManagerId());
+		//con.close();
 	}
 
 }

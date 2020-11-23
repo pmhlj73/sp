@@ -44,6 +44,7 @@
 		    <artifactId>aspectjweaver</artifactId>
 		    <version>${org.aspectj-version}</version>
 		</dependency>
+		
 		<!-- Spring JDBC -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
@@ -55,6 +56,14 @@
 			<artifactId>ojdbc8</artifactId>
 			<version>19.3.0.0</version>
 		</dependency>
+		
+		<!-- JDBC Log -->
+		<dependency>
+		    <groupId>com.googlecode.log4jdbc</groupId>
+		    <artifactId>log4jdbc</artifactId>
+		    <version>1.2</version>
+		</dependency>
+		
 		<!-- Connection Pool -->
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
@@ -62,7 +71,17 @@
 		    <version>2.1.1</version>
 		</dependency>
 		
-			
+		<!-- jasypt -->
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt-spring31</artifactId>
+			<version>1.9.2</version>
+		</dependency>	
 		
 		<!-- Logging -->
 		<dependency>

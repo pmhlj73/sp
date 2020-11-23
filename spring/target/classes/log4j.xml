@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<!-- Appenders -->
@@ -13,6 +12,22 @@
 	<!-- Application Loggers -->
 	<logger name="org.kg.myapp">
 		<level value="info" />
+	</logger>
+	
+	<logger name="jdbc.sqltiming">
+		<level value="info"/>
+	</logger>
+	
+	<logger name="jdbc.sqlonly">	<!-- sql오류 있는지 -->
+		<level value="info"/>
+	</logger>
+	
+	<logger name="jdbc.connection"> <!-- 커넥션이 몇번띄워졋는지 -->
+		<level value="info"/>
+	</logger>
+	
+	<logger name="jdbc.resultset"> <!-- resultset 결과 값이 오류가 나오면 나옴 -->
+		<level value="error"/>
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
