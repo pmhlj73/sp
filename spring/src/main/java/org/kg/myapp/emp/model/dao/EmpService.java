@@ -6,6 +6,7 @@ import java.util.Map;
 import org.kg.myapp.emp.model.vo.EmpVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EmpService implements IEmpService {
@@ -33,20 +34,24 @@ public class EmpService implements IEmpService {
 		return empRepository.getEmpInfo(empId);
 	}
 
+	@Transactional("txManager")
 	@Override
 	public void updateEmp(EmpVO emp) {
 		empRepository.updateEmp(emp);
 
 	}
 
+	@Transactional("txManager")
 	@Override
 	public void insertEmp(EmpVO emp) {
 		empRepository.insertEmp(emp);
 
 	}
 
+	@Transactional("txManager")
 	@Override
 	public void deleteEmp(int empId) {
+		empRepository.deleteJobHistory(empId);
 		empRepository.deleteEmp(empId);
 	}
 
@@ -69,6 +74,22 @@ public class EmpService implements IEmpService {
 	@Override
 	public List<Map<String, Object>> getAllManagerId() {
 		return empRepository.getAllManagerId();
+	}
+
+	@Override
+	public List<EmpVO> getSearchList(String name) {
+		name = "%"+name+"%";
+		return empRepository.getSearchList(name);
+	}
+
+	@Override
+	public List<EmpVO> getListByDept(int deptId) {
+		return empRepository.getListByDept(deptId);
+	}
+
+	@Override
+	public List<EmpVO> getMaxEmployeeByDept() {
+		return empRepository.getMaxEmployeeByDept();
 	}
 
 }

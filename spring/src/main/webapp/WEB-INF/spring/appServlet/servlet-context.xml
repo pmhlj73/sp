@@ -21,7 +21,8 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="org.kg.myapp" />
+	<!-- 객체생성하는 코드 -->
+	<context:component-scan base-package="org.kg.myapp.emp.controller" /> 
 	
 	
 	

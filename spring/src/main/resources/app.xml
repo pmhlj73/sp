@@ -3,9 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 <!-- 	<bean id="helloRepository" class="org.kg.myapp.HelloRepository" />		
 	<bean id="helloService" class="org.kg.myapp.HelloService" >
@@ -30,7 +32,6 @@
 	
 	<aop:aspectj-autoproxy/>
 	
-	<context:property-placeholder location="classpath:db/jdbc.properties"/>
 	
 	<!-- connection 만들기 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
@@ -43,5 +44,33 @@
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	
+	<bean id="propertyConfigurer"
+	class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+	<constructor-arg ref="configurationEncryptor" />
+		<property name="locations">
+		<list>
+			<value>classpath:/db/jdbc.properties</value>
+		</list>
+		</property>
+	</bean>
+	
+	<bean id="environmentVariableConfiguration"
+	class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+		<property name="algorithm" value="PBEWithMD5AndDES"/>
+		<property name="passwordEnvName" value="APP_ENCRYPTION_PASSWORD"/>
+	</bean>
+	
+	<bean id="configurationEncryptor"
+	class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+		<property name="config" ref="environmentVariableConfiguration" />
+		<property name="password" value="asd" />
+	</bean>
+	
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="txManager"/>
 
 </beans>

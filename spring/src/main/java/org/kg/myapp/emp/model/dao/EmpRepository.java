@@ -99,11 +99,12 @@ public class EmpRepository implements IEmpRepository {
 
 	@Override
 	public void insertEmp(EmpVO emp) {
-		String sql = "insert into employees value(?,?,?,?,?,sysdate,?,?,?,?,?)";
-		jdbcTemplate.update(sql, emp.getEmployeeId(), emp.getFirstName(), emp.getLastName()
-				, emp.getEmail(), emp.getPhoneNumber(), emp.getJobId(), emp.getSalary(), emp.getCommissionPct()
-				, emp.getManagerId(), emp.getDepartmentId());
-
+		String sql = "insert into employees "
+				+ "values(?,?,?,?,?,sysdate,?,?,?,?,?)";
+		jdbcTemplate.update(sql,emp.getEmployeeId(),
+				emp.getFirstName(),emp.getLastName(),emp.getEmail(),
+				emp.getPhoneNumber(),emp.getJobId(),emp.getSalary(),
+				emp.getCommissionPct(),emp.getManagerId(),emp.getDepartmentId());
 	}
 
 	@Override
@@ -144,6 +145,29 @@ public class EmpRepository implements IEmpRepository {
 				+ "(select distinct manager_id from employees)";
 				return jdbcTemplate.queryForList(sql);
 	}
+
+	@Override
+	public List<EmpVO> getSearchList(String name) {
+		String sql = "select * from employees where first_name like ? or last_name like ?";
+		return jdbcTemplate.query(sql, empMapper,name,name);
+	}
+	
+	@Override
+	public List<EmpVO> getListByDept(int deptId) {
+		String sql = "select * from employees where department_id=?";
+		return jdbcTemplate.query(sql, empMapper, deptId);
+	}
+
+	@Override
+	public List<EmpVO> getMaxEmployeeByDept() {
+		String sql = "select * from employees "
+				+ "where (department_id, salary) in "
+				+ "(select department_id, max(salary) from employees "
+				+ "group by department_id)";
+		return jdbcTemplate.query(sql, empMapper);
+	}
+
+	
 
 
 }
