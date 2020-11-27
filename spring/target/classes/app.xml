@@ -72,5 +72,15 @@
 	</bean>
 	
 	<tx:annotation-driven transaction-manager="txManager"/>
+	
+	<bean id="messageSource"
+	class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	<property name="defaultEncoding" value="UTF-8" />
+	<property name="basenames">
+		<list>
+			<value>classpath:i18n/emp</value>
+		</list>
+	</property>
+	</bean>
 
 </beans>

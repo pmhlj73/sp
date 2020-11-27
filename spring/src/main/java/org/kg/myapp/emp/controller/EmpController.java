@@ -1,11 +1,20 @@
 package org.kg.myapp.emp.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.kg.myapp.emp.model.dao.IEmpService;
 import org.kg.myapp.emp.model.vo.EmpVO;
+import org.kg.myapp.emp.util.EmpValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping(value="/emp") // 앞으로 이 컨트롤러는 무조건 emp안으로 들어오게 된다
 public class EmpController {
+	
+	
 	
 	@Autowired
 	IEmpService empService;
@@ -68,16 +79,32 @@ public class EmpController {
 	
 	@GetMapping(value="/insert")
 	public String insertEmployee(Model model) {
+		model.addAttribute("emp", new EmpVO());
 		model.addAttribute("jobList", empService.getAllJobId());
 		model.addAttribute("manList", empService.getAllManagerId());
 		model.addAttribute("deptList", empService.getAllDeptId());
 		return "emp/insert";
 	}
 	
-	@PostMapping(value="/insert")
-	public String insetEmployee(EmpVO emp, Model model) {
+	@PostMapping(value="/insert")// 검사를 진행할 곳에 @Valid를 붙임. 유효성 객체 다음에 BindingResult를 붙여서 써야함
+	public String insetEmployee(@ModelAttribute("emp") @Valid EmpVO emp, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			model.addAttribute("jobList", empService.getAllJobId());
+			model.addAttribute("manList", empService.getAllManagerId());
+			model.addAttribute("deptList", empService.getAllDeptId());
+			return "emp/insert";
+		}
 		empService.insertEmp(emp);
 		return "redirect:/emp/list";
 	}
+	
+	@ExceptionHandler(RuntimeException.class)
+	public String runtime(HttpServletRequest request, Exception e, Model model) {
+		model.addAttribute("url", request.getRequestURI());
+		model.addAttribute("exception", e);
+		return "error/runtime";
+		
+	}
+	
 	
 }
