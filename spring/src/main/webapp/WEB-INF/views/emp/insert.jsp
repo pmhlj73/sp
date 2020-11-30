@@ -9,7 +9,8 @@
 <title>사원 정보 입력</title>
 </head>
 <body>
-
+<form action="/a" method="post" enctype="mulitpart/form-data">
+</form>
 	<form:form action="insert" method="post" modelAttribute="emp">
 	<h1>사원 정보 입력</h1>
 	<table border=1>
