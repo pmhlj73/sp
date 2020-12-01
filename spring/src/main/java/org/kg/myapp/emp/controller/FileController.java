@@ -79,5 +79,30 @@ public class FileController {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	@RequestMapping("/file/delete/{fileId}")
+	public String deleteFile(@PathVariable int fileId) {
+		fileService.deleteFile(fileId);
+		return "redirect:/file/list";
+	}
+	
+	@RequestMapping("/file/list")
+	public String getFileList(Model model) {
+		model.addAttribute("fileList", fileService.getAllFileList());
+		return "/file/list";
+	}
+	
+	@RequestMapping("/file/list/{dir}")
+	public String getFileListByDir(@PathVariable String dir, Model model){
+		model.addAttribute("fileList", fileService.getFileList("/"+dir));
+		return "/file/list";
+	}
+	
+	@RequestMapping("/file/updateDir")
+	public String updateDirectory(int[] fileIds, String directoryName) {
+		fileService.updateDirectory(fileIds, directoryName);
+		return "redirect:/file/list";
+	}
+	
 
 }
