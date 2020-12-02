@@ -9,7 +9,7 @@
 <body>
 
 	<h2>Emp 메인화면</h2>
-	환영합니다!<br>
+	${user.userName}님 환영합니다!<br>
 	1. 사원의 수 <br>
 	<form action="/myapp/emp/count">
 		부서번호 : <input type="text" name="deptId"> <input type="submit" value="검색">
@@ -25,6 +25,10 @@
 	</form>
 	5. <a href="maxSalary">부서별 최고급여자</a><br>
 	6. <a href="insert">사원정보 입력</a><br>
+	7. <a href="">마이페이지</a><br>
+	<form action="/myapp/logout" method=post>
+	8. <input type=submit value=로그아웃>
+	</form><br>
 
 </body>
 </html>

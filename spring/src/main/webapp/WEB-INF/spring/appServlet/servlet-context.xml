@@ -29,6 +29,14 @@
 	<!-- 객체생성하는 코드 -->
 	<context:component-scan
 		base-package="org.kg.myapp.emp.controller" />
+	<context:component-scan
+		base-package="org.kg.myapp.user.controller"/>
+	<context:component-scan
+		base-package="org.kg.myapp.login.controller"/>
+	
+	<view-controller path="/home" view-name="home" />
+	<view-controller path="/user/insert" view-name="/user/insert" />
+	<view-controller path="/login" view-name="login" />
 
 	<!-- 파일 업로드를 위한 코드 -->
 	<beans:bean id="multipartResolver"

@@ -15,5 +15,6 @@ public interface IFileRepository {
 	List<FileVO> getAllFileList();
 	void updateDirectory(HashMap<String, Object> map);
 	void updateFile(FileVO file);
+	
 
 }

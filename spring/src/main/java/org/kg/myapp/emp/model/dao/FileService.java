@@ -54,4 +54,8 @@ public class FileService implements IFileService {
 		fileRepository.updateFile(file);
 	}
 	
+	public int getMaxFileId() {
+		return fileRepository.getMaxFileId();
+	}
+	
 }

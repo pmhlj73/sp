@@ -9,78 +9,83 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
-<!-- 	<bean id="helloRepository" class="org.kg.myapp.HelloRepository" />		
-	<bean id="helloService" class="org.kg.myapp.HelloService" >
-		<constructor-arg ref="helloRepository"/>
-	</bean>		
-	<bean id="helloController" class="org.kg.myapp.HelloController">
-		<constructor-arg ref="helloService" />
-	</bean> -->
-	
-	<context:component-scan base-package="org.kg.myapp" />
-	<context:component-scan base-package="org.kg.myapp.*" />
-	
-	<!-- <aop:config>
-		<aop:pointcut expression="execution(* org.kg..HelloController.sayHello(..))" id="timelog"/>
-		<aop:aspect ref="helloLog">
-			<aop:before method="printTime" pointcut-ref="timelog"/>
-		</aop:aspect>
-		<aop:aspect ref="timeTracer">
-			<aop:around method="trace" pointcut-ref="timelog"/>
-		</aop:aspect>
-	</aop:config> -->
-	
-	<aop:aspectj-autoproxy/>
-	
-	
+	<!-- <bean id="helloRepository" class="org.kg.myapp.HelloRepository" /> 
+		<bean id="helloService" class="org.kg.myapp.HelloService" > <constructor-arg 
+		ref="helloRepository"/> </bean> <bean id="helloController" class="org.kg.myapp.HelloController"> 
+		<constructor-arg ref="helloService" /> </bean> -->
+
+	<context:component-scan
+		base-package="org.kg.myapp" />
+	<context:component-scan
+		base-package="org.kg.myapp.*" />
+
+	<!-- <aop:config> <aop:pointcut expression="execution(* org.kg..HelloController.sayHello(..))" 
+		id="timelog"/> <aop:aspect ref="helloLog"> <aop:before method="printTime" 
+		pointcut-ref="timelog"/> </aop:aspect> <aop:aspect ref="timeTracer"> <aop:around 
+		method="trace" pointcut-ref="timelog"/> </aop:aspect> </aop:config> -->
+
+	<aop:aspectj-autoproxy />
+
+
 	<!-- connection 만들기 -->
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
-		<property name="driverClassName" value="${jdbc.driverClassName}" />	
-		<property name="url" value="${jdbc.url}" />	
-		<property name="username" value="${jdbc.username}" />	
-		<property name="password" value="${jdbc.password}" />	
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName"
+			value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
 	</bean>
-	
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+
+	<bean id="jdbcTemplate"
+		class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
+
 	<bean id="propertyConfigurer"
-	class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
-	<constructor-arg ref="configurationEncryptor" />
+		class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="configurationEncryptor" />
 		<property name="locations">
-		<list>
-			<value>classpath:/db/jdbc.properties</value>
-		</list>
+			<list>
+				<value>classpath:/db/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="environmentVariableConfiguration"
+		class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+		<property name="algorithm" value="PBEWithMD5AndDES" />
+		<property name="passwordEnvName"
+			value="APP_ENCRYPTION_PASSWORD" />
+	</bean>
+
+	<bean id="configurationEncryptor"
+		class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+		<property name="config"
+			ref="environmentVariableConfiguration" />
+		<property name="password" value="asd" />
+	</bean>
+
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:annotation-driven
+		transaction-manager="txManager" />
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="basenames">
+			<list>
+				<value>classpath:i18n/emp</value>
+			</list>
 		</property>
 	</bean>
 	
-	<bean id="environmentVariableConfiguration"
-	class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
-		<property name="algorithm" value="PBEWithMD5AndDES"/>
-		<property name="passwordEnvName" value="APP_ENCRYPTION_PASSWORD"/>
-	</bean>
-	
-	<bean id="configurationEncryptor"
-	class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
-		<property name="config" ref="environmentVariableConfiguration" />
-		<property name="password" value="asd" />
-	</bean>
-	
-	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"/>
-	</bean>
-	
-	<tx:annotation-driven transaction-manager="txManager"/>
-	
-	<bean id="messageSource"
-	class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-	<property name="defaultEncoding" value="UTF-8" />
-	<property name="basenames">
-		<list>
-			<value>classpath:i18n/emp</value>
-		</list>
-	</property>
-	</bean>
+	<!-- 단방향 암호화 작업을 해주는 것 -->
+	<bean id="bcryptPasswordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
 </beans>
