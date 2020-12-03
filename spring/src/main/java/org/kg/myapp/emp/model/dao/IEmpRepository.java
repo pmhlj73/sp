@@ -3,12 +3,13 @@ package org.kg.myapp.emp.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.kg.myapp.emp.model.vo.EmpVO;
 
 public interface IEmpRepository {
 	
 	int getEmpCount();
-	int getEmpCount(int deptId);
+	int getEmpCount(@Param("deptId")int deptId);
 	List<EmpVO> getEmpList();
 	EmpVO getEmpInfo(int empId);
 	void updateEmp(EmpVO emp);

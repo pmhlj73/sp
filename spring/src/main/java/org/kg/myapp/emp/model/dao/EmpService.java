@@ -5,13 +5,16 @@ import java.util.Map;
 
 import org.kg.myapp.emp.model.vo.EmpVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EmpService implements IEmpService {
-
+	
+	//JdbcTemplate를 사용할 때는 qualifier제거
 	@Autowired
+	@Qualifier("IEmpRepository")
 	IEmpRepository empRepository;
 	
 	@Override

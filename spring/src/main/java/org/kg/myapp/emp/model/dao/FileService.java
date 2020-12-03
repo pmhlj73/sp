@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.kg.myapp.emp.model.vo.FileVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FileService implements IFileService {
 
 	@Autowired
+	@Qualifier("IFileRepository")
 	IFileRepository fileRepository;
 	
 	@Override

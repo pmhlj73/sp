@@ -47,8 +47,8 @@
 	<tr>
 	<th>Job_id</th>
 	<td><form:select path="jobId">
-	<c:forEach var="job" items="${jobList }">
-	<option value="${job.jobId }">${job.jobTitle }</option>
+	<c:forEach var="job" items="${jobList}">
+	<option value="${job.jobId}">${job.jobTitle}</option>
 	</c:forEach>
 	</form:select></td>
 	</tr>
